@@ -89,6 +89,11 @@ class MessageTagRepo(Repo):
                       MessageTag.tag_id == tag_id))
         return (await self.session.execute(stmt)).one_or_none()
 
+    async def get_by_tag_id(self,
+                            tag_id: int) -> Sequence[Row[Tuple[MessageTag]]]:
+        stmt = select(MessageTag).where(MessageTag.tag_id == tag_id)
+        return (await self.session.execute(stmt)).all()
+
     async def delete(self, message_id: int, tag_id: int) -> None:
         stmt = delete(MessageTag).where(MessageTag.message_id == message_id,
                                         MessageTag.tag_id == tag_id)
